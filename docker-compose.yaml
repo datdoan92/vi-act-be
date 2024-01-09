@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - viact-db
+    environment:
+      - NODE_ENV=development
+      - DB_URI=mysql://viactuser:viactpassword@viact-db:3306/viactdb
+
+  viact-db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=viactdb
+      - MYSQL_USER=viactuser
+      - MYSQL_PASSWORD=viactpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
